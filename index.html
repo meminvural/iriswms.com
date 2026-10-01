@@ -72,6 +72,10 @@ hr{border:0;border-top:1px solid var(--line)}
 /* Aranabilir acilir liste (fillSelect ile doldurulan TUM select'ler otomatik bu hale gelir) */
 .aramali-wrap{position:relative}
 .aramali-input{width:100%;cursor:text}
+.aramali-wrap.aramali-doluysa .aramali-input{padding-right:30px}
+.aramali-temizle{display:none;position:absolute;right:6px;top:50%;transform:translateY(-50%);width:22px;height:22px;border:none;background:transparent;color:var(--muted);font-size:15px;line-height:1;cursor:pointer;border-radius:50%}
+.aramali-temizle:hover{background:var(--paper);color:var(--ink)}
+.aramali-wrap.aramali-doluysa .aramali-temizle{display:block}
 .aramali-liste{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid var(--line);border-radius:10px;max-height:280px;overflow-y:auto;z-index:60;box-shadow:var(--shadow)}
 .aramali-opt{padding:10px 13px;cursor:pointer;font-size:14.5px;border-bottom:1px solid var(--paper)}
 .aramali-opt:last-child{border-bottom:none}
@@ -1598,14 +1602,32 @@ function aramaliSelectUygula(sel) {
   liste.className = 'aramali-liste';
   wrap.appendChild(liste);
 
+  const temizleBtn = document.createElement('button');
+  temizleBtn.type = 'button';
+  temizleBtn.className = 'aramali-temizle';
+  temizleBtn.textContent = '✕';
+  temizleBtn.setAttribute('aria-label', 'Temizle');
+  temizleBtn.setAttribute('title', 'Temizle');
+  wrap.appendChild(temizleBtn);
+
   sel._aramaliInput = input;
 
   function opts() { return Array.from(sel.options).filter(function(o){ return o.value !== ''; }); }
+  function doluDurumGuncelle() { wrap.classList.toggle('aramali-doluysa', sel.value !== ''); }
   function girisSenkron() {
     const secili = sel.options[sel.selectedIndex];
     input.value = (secili && secili.value !== '') ? secili.textContent : '';
+    doluDurumGuncelle();
   }
   sel._aramaliSenkron = girisSenkron;
+  temizleBtn.addEventListener('mousedown', function(e){
+    e.preventDefault(); // input'un blur olmasini engelle, aksi halde girisSenkron devreye girip eski degeri geri yazar
+    sel.value = '';
+    sel.dispatchEvent(new Event('change', { bubbles: true }));
+    girisSenkron();
+    input.value = '';
+    liste.style.display = 'none';
+  });
 
   let vurguIdx = -1;
   function listeCiz(filtreMetni) {
