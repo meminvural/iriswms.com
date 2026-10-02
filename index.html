@@ -5614,15 +5614,13 @@ $('mkTaraBtn').addEventListener('click', async function() {
 
 // ── Veri İndirme (Excel/PDF Dışa Aktarma) ─────────────────────────────────
 const VI_KOLONLAR = {
+  // Her satir TEK bir depo+raf kombinasyonunu temsil eder (ayni kartin birden fazla rafta
+  // stogu varsa, tek hucrede birlestirmek yerine BIRDEN FAZLA satir olarak tekrarlanir).
   stok_kartlari: [
     ['stokKodu','Stok Kodu'], ['malzeme','Malzeme'], ['kategori','Kategori'], ['birim','Birim'],
     ['tedarikci','Tedarikçi'], ['fiyat','Fiyat'], ['minStok','Min Stok'], ['maxStok','Max Stok'],
     ['durum','Durum'], ['muhasebeKodu','Muhasebe Kodu'],
-    ['pembaDeposu','Pemba Deposu'], ['pembaDeposuRaf','Pemba Raf'],
-    ['ungujaDeposu','Unguja Deposu'], ['ungujaDeposuRaf','Unguja Raf'],
-    ['pembaCampDeposu','Pemba_Camp Deposu'], ['pembaCampDeposuRaf','Pemba_Camp Raf'],
-    ['ungujaCampDeposu','Unguja_Camp Deposu'], ['ungujaCampDeposuRaf','Unguja_Camp Raf'],
-    ['toplam','Toplam Stok']
+    ['depo','Depo'], ['raf','Raf'], ['miktar','Bu Raftaki Miktar'], ['toplamStok','Toplam Stok']
   ],
   hareketler: [
     ['tarih','Tarih'], ['fisNo','Fiş No'], ['tip','Tip'], ['stokKodu','Stok Kodu'], ['malzeme','Malzeme'],
@@ -5704,14 +5702,14 @@ $('viGetirBtn').addEventListener('click', async function() {
     const r = await api(url);
     viSonSatirlar = r.items || [];
     viSonKolonlar = VI_KOLONLAR[tip];
-    // Belirli bir depo secildiginde (stok kartlari raporunda), tum depolarin ayri kolonlari yerine
-    // sadece secilen depoya ait miktar+raf gosterilir - daha okunaklı bir cikti icin.
-    if (tip === 'stok_kartlari' && r.depoFiltreVarMi) {
+    // Depo filtresi YOKSA (tum depolar), "Depo" kolonu her satirda hangi depoya ait oldugunu
+    // gosterir; secili tek depo varsa zaten o depoya ait satirlar gelir (kolon hala anlamli).
+    if (tip === 'stok_kartlari' && !r.depoFiltreVarMi) {
       viSonKolonlar = [
         ['stokKodu','Stok Kodu'], ['malzeme','Malzeme'], ['kategori','Kategori'], ['birim','Birim'],
         ['tedarikci','Tedarikçi'], ['fiyat','Fiyat'], ['minStok','Min Stok'], ['maxStok','Max Stok'],
         ['durum','Durum'], ['muhasebeKodu','Muhasebe Kodu'],
-        ['depoMiktar','Seçilen Depodaki Miktar'], ['raf','Raf'], ['toplam','Toplam Stok (Tüm Depolar)']
+        ['depo','Depo'], ['raf','Raf'], ['miktar','Bu Raftaki Miktar'], ['toplamStok','Toplam Stok (Tüm Depolar)']
       ];
     }
 
