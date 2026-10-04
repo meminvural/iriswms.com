@@ -5773,16 +5773,6 @@ $('viGetirBtn').addEventListener('click', async function() {
     const r = await api(url);
     viSonSatirlar = r.items || [];
     viSonKolonlar = VI_KOLONLAR[tip];
-    // Depo filtresi YOKSA (tum depolar), "Depo" kolonu her satirda hangi depoya ait oldugunu
-    // gosterir; secili tek depo varsa zaten o depoya ait satirlar gelir (kolon hala anlamli).
-    if (tip === 'stok_kartlari' && !r.depoFiltreVarMi) {
-      viSonKolonlar = [
-        ['stokKodu','Stok Kodu'], ['malzeme','Malzeme'], ['kategori','Kategori'], ['birim','Birim'],
-        ['tedarikci','Tedarikçi'], ['fiyat','Fiyat'], ['minStok','Min Stok'], ['maxStok','Max Stok'],
-        ['durum','Durum'], ['muhasebeKodu','Muhasebe Kodu'],
-        ['depo','Depo'], ['raf','Raf'], ['miktar','Bu Raftaki Miktar'], ['toplamStok','Toplam Stok (Tüm Depolar)']
-      ];
-    }
 
     if (!viSonSatirlar.length) {
       $('viSonucBilgi').textContent = 'Bu filtrelerle eşleşen kayıt bulunamadı.';
