@@ -608,6 +608,27 @@ details.tp-form[open] summary{margin-bottom:10px}
 .zm-arac input[type=search]:focus,.sz-serbest input:focus,.sz-serbest select:focus{border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 25%,transparent)}
 
 @media (max-width:719.98px){.zm-ust{flex-wrap:wrap}.zm-ust .nm{flex:1 1 100%}.zm-btnler{justify-content:flex-start!important}}
+
+/* ===== 11. MENU BASLIKLARI: grup renkleri + sekil isareti (V02.05) =====
+   Renkler iki tema arka planinda (#202448 / #080D1A) >= 6.9:1 kontrast; renk korlugu benzetiminde en kotu ikili fark dE 18.5.
+   Renk tek basina anlam tasimaz: her grubun ayrica farkli SEKIL isareti ve metin etiketi vardir. */
+.navgrp{--gc:var(--nav-ink-2)}
+.navgrp[data-grp="depo"]{--gc:#4FD8EE}
+.navgrp[data-grp="zimmet"]{--gc:#FFC857}
+.navgrp[data-grp="yonetim"]{--gc:#B8A3FF}
+.navgrp[data-grp="sistem"]{--gc:#7BE0A4}
+.navhead{color:var(--gc);opacity:1;font-weight:700;letter-spacing:.015em}
+.navhead:hover{color:var(--gc);background:var(--nav-hover);filter:brightness(1.12)}
+.navhead>span{display:inline-flex;align-items:center;gap:8px}
+.navhead>span::before{content:"";width:9px;height:9px;flex:none;background:var(--gc)}
+.navgrp[data-grp="depo"] .navhead>span::before{border-radius:2px}
+.navgrp[data-grp="zimmet"] .navhead>span::before{border-radius:50%}
+.navgrp[data-grp="yonetim"] .navhead>span::before{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.navgrp[data-grp="sistem"] .navhead>span::before{clip-path:polygon(50% 0,100% 100%,0 100%)}
+.navhead .chev{opacity:.9}
+/* ikon modunda baslik gizli: gruplari ayiran ince cizgi grubun rengini tasir */
+@media (min-width:720px) and (max-width:1099.98px){.navgrp+.navgrp{border-top-color:color-mix(in srgb,var(--gc) 45%,transparent)}}
+@media (min-width:1100px){:root.collapsed .navgrp+.navgrp{border-top-color:color-mix(in srgb,var(--gc) 45%,transparent)}}
 </style>
 </head>
 <body>
