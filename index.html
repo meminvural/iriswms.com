@@ -2178,7 +2178,8 @@ async function api(path, opts) {
   try {
     const res = await fetch(BASE + '/' + path, { method: opts.method || 'GET', headers, body: opts.body ? JSON.stringify(opts.body) : undefined });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || ('İstek başarısız (' + res.status + ')'));
+    if (!res.ok) { if (state.token && /oturum/i.test(data.error || '')) window._oturumGecersiz = true; throw new Error(data.error || ('İstek başarısız (' + res.status + ')')); }
+    if (state.token) window._oturumGecersiz = false;
     if ((opts.method || 'GET') !== 'GET' && !/^(get-|reports|export-data|system-health)/.test(endpointAdi) && !(opts.body && /^(getir|getir_cok|ayarlar|fis_listele|fis_detay|sonraki_form_no|listele)$/.test(opts.body.action || ''))) window._apiYazmaSayaci = (window._apiYazmaSayaci || 0) + 1;
     return data;
   } catch (e) {
@@ -2619,7 +2620,7 @@ async function boot() {
   loadDashboard();
   bildirimYukle();
   clearInterval(bildirimTimer);
-  bildirimTimer = setInterval(function () { if (document.visibilityState === 'visible') bildirimYukle(); }, 60000);
+  bildirimTimer = setInterval(function () { if (document.visibilityState === 'visible' && !window._oturumGecersiz) bildirimYukle(); }, 60000);
   offlineRozetGuncelle();
 }
 
@@ -3247,13 +3248,14 @@ function planPanoYenileme() {
   if (!$('panoOtoYenile') || !$('panoOtoYenile').checked) return;
   if (!$('view-pano').classList.contains('active')) return;
   if (document.visibilityState === 'hidden') return;   // arka plandaki sekme yenileme yapmaz
+  if (window._oturumGecersiz) return;                // suresi dolmus oturumla bosuna sunucuya gitme
   _panoRefreshTimer = setTimeout(function () { loadDashboard(true); }, 30000);
 }
 document.addEventListener('visibilitychange', function () {
   if (document.visibilityState === 'hidden') { clearTimeout(_panoRefreshTimer); return; }
   const pano = $('view-pano') && $('view-pano').classList.contains('active') && $('panoOtoYenile') && $('panoOtoYenile').checked;
   if (pano && Date.now() - _dashZaman > 30000) loadDashboard(true); else planPanoYenileme();
-  if (state.token && Date.now() - (window._bildirimZaman || 0) > 60000) bildirimYukle();
+  if (state.token && !window._oturumGecersiz && Date.now() - (window._bildirimZaman || 0) > 60000) bildirimYukle();
 });
 document.addEventListener('change', function(e){ if (e.target && e.target.id === 'panoOtoYenile') planPanoYenileme(); });
 
