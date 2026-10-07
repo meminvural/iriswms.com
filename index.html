@@ -654,6 +654,57 @@ details.tp-form[open] summary{margin-bottom:10px}
 body.ks-acik{overflow:hidden}
 .ks-secili{outline:2px solid var(--primary);outline-offset:-2px;border-radius:10px}
 @media (max-width:719.98px){#kisayolBtn{display:none}.ks-ort{padding:0}.ks-kutu{border-radius:0;height:100%}}
+
+/* ===== 13. FIS DETAYI + DUZENLEME (V02.07) ===== */
+.fd-ort{position:fixed;inset:0;z-index:650;display:flex;align-items:center;justify-content:center;padding:12px;background:rgba(8,13,26,.55);backdrop-filter:blur(2px)}
+.fd-kutu{width:min(1100px,100%);max-height:100%;display:flex;flex-direction:column;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.45);overflow:hidden}
+.fd-ust{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:14px 18px 10px;border-bottom:1px solid var(--line)}
+.fd-bas h2{margin:0;font-size:19px}
+.fd-alt{font-size:13px;color:var(--muted);margin-top:2px}
+.fd-btnler{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.fd-govde{padding:14px 18px;overflow:auto;flex:1;min-height:120px}
+.fd-bilgiler{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.fd-bilgi{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.fd-bilgi span{font-size:11.5px;color:var(--muted)}
+.fd-bilgi b{font-size:14.5px;word-break:break-word}
+.fd-h3{margin:16px 0 8px;font-size:14.5px}
+.fd-tablo-kap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+.fd-tablo{width:100%;border-collapse:collapse;font-size:13.5px;min-width:640px}
+.fd-tablo th{position:static;text-align:left;font-size:12px;color:var(--muted);padding:7px 9px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--surface-2)}
+.fd-tablo td{padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:middle}
+.fd-tablo .sag,.fd-tablo th.sag{text-align:right}
+.fd-ad{min-width:200px}
+.fd-ad small{color:var(--muted)}
+.fd-tablo input,.fd-tablo select{width:100%;min-width:70px;padding:6px 8px;border:1.5px solid var(--line-strong);border-radius:8px;min-height:36px;background:var(--surface);color:var(--ink)}
+.fd-satir.fd-silindi td{opacity:.5;text-decoration:line-through}
+.fd-satir.fd-silindi td:last-child{opacity:1;text-decoration:none}
+.fd-satir.fd-yeni{background:color-mix(in srgb,var(--ok,#1a8a4a) 8%,transparent)}
+.fd-eylem{display:flex;align-items:center;gap:10px;padding:10px 18px;border-top:1px solid var(--line);background:var(--surface)}
+.fd-bos{flex:1}
+.fd-durum{font-size:13px;color:var(--muted)}
+.fd-durum.kirli{color:#9a5b00;font-weight:600}
+.fd-durum.hata{color:var(--danger,#c0392b);font-weight:600}
+.fd-uyari{background:color-mix(in srgb,var(--primary) 8%,transparent);border:1px solid color-mix(in srgb,var(--primary) 25%,transparent);border-radius:10px;padding:8px 12px;font-size:13px;margin-bottom:10px}
+.fd-not{font-size:13px;color:var(--muted);margin:10px 0 0}
+.fd-aday{padding:8px 10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+#fdEkleAra{width:100%;padding:9px 12px;border:1.5px solid var(--line-strong);border-radius:10px;min-height:42px}
+body.fd-acik{overflow:hidden}
+.fd-tablo td.nw{white-space:nowrap}
+@media (max-width:719.98px){
+  .fd-ort{padding:0}.fd-kutu{border-radius:0;height:100%}
+  .fd-ust{padding:10px 12px 8px}.fd-bas h2{font-size:17px}.fd-govde{padding:10px 12px}
+  .fd-bilgiler{grid-template-columns:repeat(3,1fr);gap:6px}.fd-bilgi{padding:6px 8px}.fd-bilgi b{font-size:13px}
+  .fd-tablo{min-width:0}.fd-tablo thead{display:none}
+  .fd-tablo tr{display:block;padding:8px 4px;border-bottom:8px solid var(--surface-2)}
+  .fd-tablo td{display:flex;justify-content:space-between;align-items:center;gap:12px;border:0;padding:3px 8px;text-align:right}
+  .fd-tablo td::before{content:attr(data-label);color:var(--muted);font-size:12px;text-align:left;flex:0 0 auto}
+  .fd-tablo td.fd-ad{display:block;text-align:left;min-width:0}.fd-tablo td.fd-ad::before{display:none}
+  .fd-tablo td.fd-no,.fd-tablo td.fd-islem{display:none}
+  .fd-tablo td.fd-islem{display:flex;justify-content:flex-end}
+  .fd-tablo tr.fd-satir:has(.fd-islem) td.fd-islem{display:flex}
+  .fd-tablo input,.fd-tablo select{width:62%;min-width:0}
+  .fd-eylem{padding:8px 12px}
+}
 </style>
 </head>
 <body>
@@ -7256,7 +7307,7 @@ async function fisGoruntule(fis) {
     await fgYenidenCiz();
     fgDugmeleriAyarla();
     document.getElementById('fgPdf').onclick = async function(){ try { await fisPdfIndir([fis]); } catch (e) { toast(e.message, true); } };
-  } catch (e) { document.getElementById('fgSayfalar').innerHTML = '<div class="empty">' + esc(e.message) + '</div>'; }
+  } catch (e) { document.getElementById('fgSayfalar').innerHTML = '<div class="empty">' + esc(/jspdf/i.test(e.message) ? i18nT('Form/PDF bileşeni (jsPDF) yüklenemedi. İnternet bağlantınızı kontrol edip sayfayı yenileyin.') : e.message) + '</div>'; }
 }
 async function fgYenidenCiz() { const c = FG.ctx; await fgCiz([fisModeli(c.fis, c.satirlar, c.kayit)]); }
 function fgDugmeleriAyarla() {
@@ -7335,7 +7386,7 @@ async function tpFisYukle() {
       try { await fisPdfIndir(l); } catch (e) { toast(e.message, true); } finally { guncelle(); }
     });
     box.querySelectorAll('[data-tpfisgor]').forEach(function(btn){
-      btn.addEventListener('click', function(){ fisGoruntule(window._tpFisler[Number(btn.dataset.tpfisgor)]); });
+      btn.addEventListener('click', function(){ fisDetayAc(window._tpFisler[Number(btn.dataset.tpfisgor)]); });
     });
     box.querySelectorAll('[data-tpfissil]').forEach(function(btn){
       btn.addEventListener('click', async function(){
@@ -7825,6 +7876,234 @@ async function szSerbestKaydet(btn) {
 
 
 // ═══════════════════════════════════════════════════════════════════════════════════════════
+// GEÇMİŞ FİŞ DETAYI + DÜZENLEME (V02.07)
+//  • "Görüntüle" artık harici PDF kütüphanesine (jsPDF) BAĞIMLI DEĞİL: fiş ayrıntısı (fiş no, tür, depo, tarih, kullanıcı,
+//    kalemler, miktar, birim, raf, form bilgileri) saf HTML olarak gösterilir. Kâğıt form görünümü/PDF ikincil düğmelerdir.
+//  • Düzenleme SADECE yönetici (silme/düzeltme ile aynı yetki; sunucuda da zorlanır). Tüm kayıt TEK atomik sunucu işlemidir
+//    (fn_fis_duzenle): stok ve raflar yalnızca NET FARK kadar değişir, fiş numarası/tarihi korunur, hata olursa hiçbir değişiklik kalmaz.
+//  • Sunucu 'surum' (fiş içeriğinin özeti) ister: aynı fiş başka biri tarafından değiştirilmişse veya istek tekrarlanmışsa REDDEDİLİR.
+// ═══════════════════════════════════════════════════════════════════════════════════════════
+const FISDETAY = (function () {
+  'use strict';
+  const dil = function () { return (typeof appLang !== 'undefined' && appLang === 'en') ? 'en' : 'tr'; };
+  const T = function (tr, en) { return dil() === 'en' ? en : tr; };
+  const q = function (sel) { return document.querySelector(sel); };
+  let FD = null;          // { fis, satirlar, surum, kayit, duzenle, taslak, ilkImza, yukleniyor }
+  let eklePulu = null;
+
+  const tipAdi = function (tip) { return tip === 'ÇIKIŞ' ? T('Çıkış', 'Issue (out)') : T('Giriş', 'Receipt (in)'); };
+  const sayi = function (v) { const n = Number(String(v).replace(',', '.')); return isFinite(n) ? n : NaN; };
+  const norm = function (r) { return { u: r.uuid || ('yeni:' + (r.stok_kodu || '')), m: sayi(r.miktar), r: String(r.raf || '').trim().toUpperCase(), a: String(r.aciklama || '').trim(), x: r.masraf_id || '', s: !!r.silindi }; };
+  const imza = function (taslak) { return JSON.stringify(taslak.map(norm)); };
+  const masraflar = function () { return Array.prototype.filter.call(document.querySelectorAll('#tpMasraf option'), function (o) { return o.value; }).map(function (o) { return { id: o.value, ad: o.textContent }; }); };
+  const tarihMetni = function (t) { try { return new Date(t).toLocaleString('tr-TR'); } catch (e) { return String(t || ''); } };
+
+  function kur() {
+    let el = q('#fisDetay'); if (el) return el;
+    el = document.createElement('div'); el.id = 'fisDetay'; el.className = 'fd-ort'; el.hidden = true;
+    el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-labelledby', 'fdBaslik');
+    el.innerHTML = '<div class="fd-kutu"><div class="fd-ust"><div class="fd-bas"><h2 id="fdBaslik"></h2><div class="fd-alt" id="fdAlt"></div></div>' +
+      '<div class="fd-btnler"><button type="button" class="btn btn-ghost btn-sm" id="fdForm"></button><button type="button" class="btn btn-ghost btn-sm" id="fdPdf"></button>' +
+      '<button type="button" class="btn btn-ghost btn-sm" id="fdDuzenle" hidden></button><button type="button" class="btn btn-ghost btn-sm" id="fdKapat" aria-label="Kapat">✕</button></div></div>' +
+      '<div class="fd-govde" id="fdGovde"></div>' +
+      '<div class="fd-eylem" id="fdEylem" hidden><span class="fd-durum" id="fdDurum" role="status"></span><span class="fd-bos"></span>' +
+      '<button type="button" class="btn btn-ghost" id="fdIptal"></button><button type="button" class="btn btn-primary" id="fdKaydet"></button></div></div>';
+    document.body.appendChild(el);
+    el.addEventListener('click', function (e) { if (e.target === el) kapatIstegi(); });
+    q('#fdKapat').addEventListener('click', kapatIstegi);
+    q('#fdForm').addEventListener('click', formAc);
+    q('#fdPdf').addEventListener('click', pdfIndir);
+    q('#fdDuzenle').addEventListener('click', duzenleBaslat);
+    q('#fdIptal').addEventListener('click', iptal);
+    q('#fdKaydet').addEventListener('click', kaydet);
+    const govde = q('#fdGovde');
+    govde.addEventListener('input', function (e) {
+      const t = e.target, i = t.dataset && t.dataset.i; if (!FD || !FD.duzenle || i === undefined || !t.dataset.alan) return;
+      if (t.dataset.alan === 'raf') { const p = t.selectionStart; t.value = t.value.toUpperCase(); try { t.setSelectionRange(p, p); } catch (x) {} }
+      FD.taslak[Number(i)][t.dataset.alan] = t.value; durumYaz();
+    });
+    govde.addEventListener('change', function (e) { const t = e.target; if (FD && FD.duzenle && t.dataset && t.dataset.alan === 'masraf_id') { FD.taslak[Number(t.dataset.i)].masraf_id = t.value; durumYaz(); } });
+    govde.addEventListener('click', function (e) {
+      const b = e.target.closest && e.target.closest('[data-sil]'); if (b && FD && FD.duzenle) { const r = FD.taslak[Number(b.dataset.sil)]; r.silindi = !r.silindi; if (r.yeni && r.silindi) FD.taslak.splice(Number(b.dataset.sil), 1); ciz(); durumYaz(); return; }
+      const k = e.target.closest && e.target.closest('[data-ekle]'); if (k && FD && FD.duzenle) kalemEkle(Number(k.dataset.ekle));
+    });
+    govde.addEventListener('input', function (e) {
+      if (e.target.id !== 'fdEkleAra') return; clearTimeout(eklePulu);
+      const v = e.target.value.trim(), kutu = q('#fdEkleSonuc'); if (!v) { kutu.innerHTML = ''; return; }
+      eklePulu = setTimeout(async function () {
+        try {
+          const r = await api('get-cards?q=' + encodeURIComponent(v) + '&pageSize=8'); FD.aramaSonuc = r.items || [];
+          kutu.innerHTML = FD.aramaSonuc.length ? FD.aramaSonuc.map(function (k, i) { return '<div class="itemrow fd-aday" data-ekle="' + i + '" tabindex="0"><div><div class="nm">' + esc(k.malzeme) + '</div><div class="meta">' + esc(k.stokKodu) + ' · ' + esc(k.birim || '—') + '</div></div><span class="pill info">' + T('Ekle', 'Add') + '</span></div>'; }).join('')
+            : '<div class="meta" style="padding:8px 4px">' + T('Sonuç yok.', 'No results.') + '</div>';
+        } catch (x) { kutu.innerHTML = '<div class="meta" style="padding:8px 4px">' + esc(x.message) + '</div>'; }
+      }, 300);
+    });
+    return el;
+  }
+
+  function kalemEkle(i) {
+    const k = (FD.aramaSonuc || [])[i]; if (!k) return;
+    if (FD.taslak.some(function (r) { return !r.silindi && r.stok_kodu === k.stokKodu && r.yeni; })) { toast(T('Bu malzeme zaten eklendi.', 'This item has already been added.'), true); return; }
+    const ilk = FD.taslak[0] || {};
+    FD.taslak.push({ uuid: null, stok_kodu: k.stokKodu, malzeme: k.malzeme, birim: k.birim || '', miktar: '1', raf: String(k.raf || '').toUpperCase(), aciklama: '', masraf_id: ilk.masraf_id || '', yeni: true, silindi: false });
+    ciz(); durumYaz(); const son = document.querySelector('#fdGovde tr.fd-satir:last-child input[data-alan="miktar"]'); if (son) son.focus();
+  }
+
+  function bilgiKutusu(etiket, deger) { return '<div class="fd-bilgi"><span>' + esc(etiket) + '</span><b>' + deger + '</b></div>'; }
+  function formBilgileri() {
+    const k = FD.kayit; if (!k || !k.alanlar) return '';
+    const tip = FD.fis.tip === 'ÇIKIŞ' ? 'cikis_sevkiyat' : 'mal_kabul', tanim = (typeof FG_UST_ALAN !== 'undefined' && FG_UST_ALAN[tip]) || [];
+    const sat = tanim.filter(function (a) { return k.alanlar[a[0]] != null && String(k.alanlar[a[0]]).trim() !== ''; })
+      .map(function (a) { return bilgiKutusu(a[1].split(' / ')[0], esc(k.alanlar[a[0]])); });
+    return sat.length ? '<h3 class="fd-h3">' + T('Form Bilgileri', 'Form Details') + '</h3><div class="fd-bilgiler">' + sat.join('') + '</div>' : '';
+  }
+
+  function ciz() {
+    if (!FD) return;
+    const f = FD.fis, s = FD.satirlar, ilk = s[0] || {}, admin = typeof formIsAdmin === 'function' && formIsAdmin();
+    const toplam = s.reduce(function (a, r) { return a + (Number(r.miktar) || 0); }, 0);
+    q('#fdBaslik').textContent = T('Fiş', 'Slip') + ' #' + f.fis_no + ' · ' + tipAdi(f.tip) + (FD.duzenle ? ' · ' + T('DÜZENLEME', 'EDITING') : '');
+    q('#fdAlt').textContent = (ilk.depo || f.depo || '') + ' · ' + tarihMetni(ilk.tarih || f.tarih);
+    q('#fdForm').textContent = '📄 ' + T('Form Görünümü', 'Form View'); q('#fdPdf').textContent = '⬇️ PDF';
+    const duz = q('#fdDuzenle'); duz.textContent = '✏️ ' + T('Düzenle', 'Edit'); duz.hidden = !(admin && !FD.duzenle && !FD.yukleniyor && s.length);
+    q('#fdEylem').hidden = !FD.duzenle; q('#fdIptal').textContent = T('İptal', 'Cancel'); q('#fdKaydet').textContent = '💾 ' + T('Kaydet', 'Save');
+    let h = '<div class="fd-bilgiler">' +
+      bilgiKutusu(T('Fiş No', 'Slip No'), '#' + esc(f.fis_no)) + bilgiKutusu(T('İşlem Türü', 'Type'), '<span class="pill ' + (f.tip === 'ÇIKIŞ' ? 'danger' : 'ok') + '">' + esc(tipAdi(f.tip)) + '</span>') +
+      bilgiKutusu(T('Depo', 'Warehouse'), esc(ilk.depo || f.depo || '—')) + bilgiKutusu(T('Tarih', 'Date'), esc(tarihMetni(ilk.tarih || f.tarih))) +
+      bilgiKutusu(T('İşlemi Yapan', 'Processed by'), esc(ilk.personel || f.personel || '—')) + bilgiKutusu(T('Kalem', 'Lines'), esc(s.length)) + bilgiKutusu(T('Toplam Miktar', 'Total Qty'), esc(fmt(toplam))) + '</div>';
+    if (!FD.duzenle) h += formBilgileri();
+    if (!admin && !FD.duzenle) h += '<p class="fd-not">' + T('Düzenleme yetkisi yöneticidedir.', 'Only administrators can edit slips.') + '</p>';
+    h += '<h3 class="fd-h3">' + T('Malzeme Satırları', 'Items') + '</h3>';
+    h += FD.duzenle ? duzenlemeTablosu() : gorunumTablosu();
+    q('#fdGovde').innerHTML = h;
+  }
+  function gorunumTablosu() {
+    const s = FD.satirlar;
+    return '<div class="fd-tablo-kap"><table class="fd-tablo"><thead><tr><th>#</th><th>' + T('Stok Kodu', 'Code') + '</th><th>' + T('Malzeme', 'Item') + '</th><th>' + T('Birim', 'Unit') + '</th><th class="sag">' + T('Miktar', 'Qty') + '</th><th>' + T('Raf', 'Shelf') + '</th><th>' + T('Masraf Merkezi', 'Cost Centre') + '</th><th>' + T('Teslim Alan', 'Received by') + '</th><th>' + T('Açıklama', 'Remarks') + '</th></tr></thead><tbody>' +
+      s.map(function (r, i) { const L = function (a) { return ' data-label="' + esc(a) + '"'; }; return '<tr class="fd-satir"><td class="fd-no"' + L('#') + '>' + (i + 1) + '</td><td class="nw"' + L(T('Stok Kodu', 'Code')) + '>' + esc(r.stok_kodu) + '</td><td class="fd-ad"' + L(T('Malzeme', 'Item')) + '>' + esc(r.malzeme) + '</td><td' + L(T('Birim', 'Unit')) + '>' + esc(r.birim || '') + '</td><td class="sag"' + L(T('Miktar', 'Qty')) + '><b>' + esc(fmt(r.miktar)) + '</b></td><td class="nw"' + L(T('Raf', 'Shelf')) + '>' + esc(r.raf || '—') + '</td><td' + L(T('Masraf Merkezi', 'Cost Centre')) + '>' + esc(r.masraf_merkezi || '—') + '</td><td' + L(T('Teslim Alan', 'Received by')) + '>' + esc([r.teslim_alan, r.talep_fis_no ? '(' + r.talep_fis_no + ')' : ''].filter(Boolean).join(' ') || '—') + '</td><td' + L(T('Açıklama', 'Remarks')) + '>' + esc(r.aciklama || '—') + '</td></tr>'; }).join('') + '</tbody></table></div>';
+  }
+  function duzenlemeTablosu() {
+    const mm = masraflar();
+    const sec = function (r, i) { return '<select data-alan="masraf_id" data-i="' + i + '"' + (r.silindi ? ' disabled' : '') + '>' + mm.map(function (m) { return '<option value="' + esc(m.id) + '"' + (m.id === r.masraf_id ? ' selected' : '') + '>' + esc(m.ad) + '</option>'; }).join('') + '</select>'; };
+    return '<div class="fd-uyari">' + T('Miktar, raf, masraf merkezi ve açıklama düzenlenebilir; satır çıkarabilir veya malzeme ekleyebilirsiniz. Stok ve raflar yalnızca <b>net farka</b> göre güncellenir; fiş numarası değişmez.', 'You can edit quantity, shelf, cost centre and remarks, remove lines or add items. Stock and shelves are updated only by the <b>net difference</b>; the slip number does not change.') + '</div>' +
+      '<div class="fd-tablo-kap"><table class="fd-tablo"><thead><tr><th>#</th><th>' + T('Malzeme', 'Item') + '</th><th>' + T('Miktar', 'Qty') + '</th><th>' + T('Raf', 'Shelf') + '</th><th>' + T('Masraf Merkezi', 'Cost Centre') + '</th><th>' + T('Açıklama', 'Remarks') + '</th><th></th></tr></thead><tbody>' +
+      FD.taslak.map(function (r, i) {
+        return '<tr class="fd-satir' + (r.silindi ? ' fd-silindi' : '') + (r.yeni ? ' fd-yeni' : '') + '" data-i="' + i + '"><td class="fd-no" data-label="#">' + (i + 1) + '</td><td class="fd-ad"><b>' + esc(r.stok_kodu) + '</b> ' + esc(r.malzeme) + ' <small>' + esc(r.birim || '') + (r.yeni ? ' · ' + T('YENİ', 'NEW') : '') + '</small></td>' +
+          '<td data-label="' + T('Miktar', 'Qty') + '"><input type="number" inputmode="decimal" step="any" min="0" data-alan="miktar" data-i="' + i + '" value="' + esc(r.miktar) + '"' + (r.silindi ? ' disabled' : '') + ' aria-label="' + T('Miktar', 'Qty') + '"></td>' +
+          '<td data-label="' + T('Raf', 'Shelf') + '"><input type="text" data-alan="raf" data-i="' + i + '" value="' + esc(r.raf) + '" maxlength="40" autocomplete="off"' + (r.silindi ? ' disabled' : '') + ' aria-label="' + T('Raf', 'Shelf') + '"></td><td data-label="' + T('Masraf Merkezi', 'Cost Centre') + '">' + sec(r, i) + '</td>' +
+          '<td data-label="' + T('Açıklama', 'Remarks') + '"><input type="text" data-alan="aciklama" data-i="' + i + '" value="' + esc(r.aciklama) + '" autocomplete="off"' + (r.silindi ? ' disabled' : '') + ' aria-label="' + T('Açıklama', 'Remarks') + '"></td>' +
+          '<td class="fd-islem"><button type="button" class="btn btn-ghost btn-sm" data-sil="' + i + '" title="' + (r.silindi ? T('Geri al', 'Undo') : T('Satırı çıkar', 'Remove line')) + '">' + (r.silindi ? '↩' : '🗑') + '</button></td></tr>';
+      }).join('') + '</tbody></table></div>' +
+      '<h3 class="fd-h3">➕ ' + T('Malzeme Ekle', 'Add Item') + '</h3><input type="search" id="fdEkleAra" placeholder="' + T('Stok kodu veya malzeme adı ara…', 'Search stock code or item name…') + '" autocomplete="off"><div id="fdEkleSonuc"></div>';
+  }
+
+  function durumYaz() {
+    const d = q('#fdDurum'); if (!d) return;
+    d.textContent = FD && FD.duzenle ? (fisDetayKirli() ? T('● Kaydedilmemiş değişiklikler var', '● Unsaved changes') : T('Değişiklik yok', 'No changes')) : '';
+    d.className = 'fd-durum' + (FD && FD.duzenle && fisDetayKirli() ? ' kirli' : '');
+  }
+  function degisiklikOzeti() {
+    const eski = {}; FD.satirlar.forEach(function (r) { eski[r.uuid] = r; }); const out = [];
+    FD.taslak.forEach(function (r) {
+      const kod = r.stok_kodu;
+      if (r.yeni) { if (!r.silindi) out.push('+ ' + kod + ': ' + sayi(r.miktar) + ' ' + T('adet', 'pcs') + ' @ ' + String(r.raf).trim().toUpperCase()); return; }
+      const o = eski[r.uuid]; if (!o) return;
+      if (r.silindi) { out.push('− ' + kod + ': ' + T('satır çıkarılacak', 'line removed') + ' (' + fmt(o.miktar) + ')'); return; }
+      const p = [];
+      if (sayi(r.miktar) !== Number(o.miktar)) p.push(T('miktar', 'qty') + ' ' + fmt(o.miktar) + '→' + fmt(sayi(r.miktar)));
+      if (String(r.raf).trim().toUpperCase() !== String(o.raf || '').toUpperCase()) p.push(T('raf', 'shelf') + ' ' + (o.raf || '—') + '→' + String(r.raf).trim().toUpperCase());
+      if (String(r.aciklama || '').trim() !== String(o.aciklama || '').trim()) p.push(T('açıklama', 'remarks'));
+      if ((r.masraf_id || '') !== (o.masraf_merkezi_id || '')) p.push(T('masraf merkezi', 'cost centre'));
+      if (p.length) out.push('• ' + kod + ': ' + p.join(', '));
+    });
+    return out;
+  }
+  function dogrula() {
+    const aktif = FD.taslak.filter(function (r) { return !r.silindi; });
+    if (!aktif.length) return T('En az bir kalem kalmalı. Fişin tamamını silmek için fiş listesindeki "Sil" düğmesini kullanın.', 'At least one line must remain. Use "Delete" in the slip list to delete the whole slip.');
+    for (let i = 0; i < aktif.length; i++) {
+      const r = aktif[i], m = sayi(r.miktar);
+      if (!(m > 0)) return r.stok_kodu + ': ' + T('miktar 0\'dan büyük olmalı.', 'quantity must be greater than 0.');
+      if (!String(r.raf || '').trim()) return r.stok_kodu + ': ' + T('raf bilgisi zorunlu.', 'shelf is required.');
+      if (!r.masraf_id) return r.stok_kodu + ': ' + T('masraf merkezi seçin.', 'select a cost centre.');
+    }
+    return null;
+  }
+
+  async function yukle() {
+    FD.yukleniyor = true; q('#fdGovde').innerHTML = '<div class="spin"></div>'; q('#fdEylem').hidden = true; q('#fdDuzenle').hidden = true;
+    try {
+      const r = await api('fis-islemleri', { method: 'POST', body: { action: 'detay', fis_no: FD.fis.fis_no } });
+      FD.satirlar = r.items || []; FD.surum = (FD.satirlar[0] || {}).surum || null;
+      const t = FD.fis.tip === 'ÇIKIŞ' ? 'cikis_sevkiyat' : 'mal_kabul';
+      try { const k = await api('form-alanlari', { method: 'POST', body: { action: 'getir_cok', form_tipi: t, refs: [String(FD.fis.fis_no)] } }); FD.kayit = ((k && k.kayitlar) || {})[String(FD.fis.fis_no)] || null; } catch (e) { FD.kayit = null; }
+      FD.yukleniyor = false; ciz(); durumYaz();
+    } catch (e) { FD.yukleniyor = false; q('#fdGovde').innerHTML = '<div class="empty">' + esc(e.message) + '</div>'; }
+  }
+  function ac(fis, duzenle) {
+    kur(); FD = { fis: fis, satirlar: [], surum: null, kayit: null, duzenle: false, taslak: [], ilkImza: '', yukleniyor: true };
+    const el = q('#fisDetay'); el.hidden = false; document.body.classList.add('fd-acik');
+    q('#fdBaslik').textContent = T('Fiş', 'Slip') + ' #' + fis.fis_no + ' · ' + tipAdi(fis.tip); q('#fdAlt').textContent = (fis.depo || '') + ' · ' + tarihMetni(fis.tarih);
+    q('#fdForm').textContent = '📄 ' + T('Form Görünümü', 'Form View'); q('#fdPdf').textContent = '⬇️ PDF'; q('#fdKapat').focus();
+    return yukle().then(function () { if (duzenle) duzenleBaslat(); });
+  }
+  function duzenleBaslat() {
+    if (!FD || FD.yukleniyor || FD.duzenle) return false;
+    if (!(typeof formIsAdmin === 'function' && formIsAdmin())) { toast(T('Fiş düzenleme yetkisi yöneticidedir.', 'Only administrators can edit slips.'), true); return false; }
+    FD.taslak = FD.satirlar.map(function (r) { return { uuid: r.uuid, stok_kodu: r.stok_kodu, malzeme: r.malzeme, birim: r.birim || '', miktar: String(r.miktar), raf: r.raf || '', aciklama: r.aciklama || '', masraf_id: r.masraf_merkezi_id || '', yeni: false, silindi: false }; });
+    FD.ilkImza = imza(FD.taslak); FD.duzenle = true; ciz(); durumYaz();
+    const ilk = q('#fdGovde input[data-alan="miktar"]'); if (ilk) ilk.focus();
+    return true;
+  }
+  function iptal() {
+    if (!FD || !FD.duzenle) return;
+    if (fisDetayKirli() && !window.confirm(T('Kaydedilmemiş değişiklikler var. Düzenlemeden çıkarsanız kaybolur. Devam edilsin mi?', 'You have unsaved changes. They will be lost if you stop editing. Continue?'))) return;
+    FD.duzenle = false; FD.taslak = []; ciz(); durumYaz();
+  }
+  async function kaydet() {
+    if (!FD || !FD.duzenle) return;
+    const btn = q('#fdKaydet'); if (btn.disabled) return;
+    const hata = dogrula(); if (hata) { toast(hata, true); return; }
+    const oz = degisiklikOzeti(); if (!oz.length) { toast(T('Değişiklik yapılmadı.', 'No changes were made.')); return; }
+    const liste = oz.slice(0, 12).join('\n') + (oz.length > 12 ? '\n… (+' + (oz.length - 12) + ')' : '');
+    if (!window.confirm(T('Fiş #', 'Slip #') + FD.fis.fis_no + T(' düzenlenecek:\n', ' will be edited:\n') + liste + T('\n\nStok ve raf miktarları yalnızca NET FARKA göre güncellenecek; fiş numarası değişmeyecek. Devam edilsin mi?', '\n\nStock and shelf quantities will be updated only by the NET DIFFERENCE; the slip number will not change. Continue?'))) return;
+    const satirlar = FD.taslak.filter(function (r) { return !r.silindi; }).map(function (r) {
+      const o = { miktar: sayi(r.miktar), raf: String(r.raf).trim().toUpperCase(), aciklama: String(r.aciklama || '').trim() || null, masraf_merkezi_id: r.masraf_id };
+      if (r.yeni) o.stok_kodu = r.stok_kodu; else o.uuid = r.uuid; return o;
+    });
+    btn.disabled = true; const yazi = btn.textContent; btn.textContent = T('Kaydediliyor…', 'Saving…'); q('#fdDurum').textContent = T('Sunucuda doğrulanıp uygulanıyor…', 'Being validated and applied on the server…');
+    try {
+      const r = await api('fis-islemleri', { method: 'POST', body: { action: 'duzenle', fis_no: FD.fis.fis_no, surum: FD.surum, satirlar: satirlar } });
+      if (!r || !r.ok || !r.sonuc) throw new Error(T('Sunucu işlemi onaylamadı; değişiklik yapılmış sayılmaz. Fişi yenileyip kontrol edin.', 'The server did not confirm the operation. Reload the slip and check.'));
+      const s = r.sonuc, st = (s.stok || []).slice(0, 4).map(function (x) { return x.stok_kodu + ': ' + fmt(x.onceki) + '→' + fmt(x.yeni); }).join(' · ');
+      FD.duzenle = false; FD.taslak = [];
+      toast('✅ ' + T('Fiş #', 'Slip #') + s.fisNo + T(' güncellendi: ', ' updated: ') + s.guncellenen + T(' güncellenen, ', ' changed, ') + s.eklenen + T(' eklenen, ', ' added, ') + s.silinen + T(' silinen kalem.', ' removed.') + (st ? ' ' + T('Stok: ', 'Stock: ') + st : ''));
+      await yukle();                                               // güncel veri + yeni sürüm
+      if (typeof tpFisYukle === 'function') tpFisYukle();           // fiş listesi güncel bilgilerle yenilenir
+    } catch (e) {
+      toast(e.message, true);
+      if (/siz açtıktan sonra değişmiş/.test(e.message) && window.confirm(T('Fiş başka biri tarafından değiştirilmiş. Güncel halini yüklemek için bu düzenlemeniz atılacak. Yüklensin mi?', 'The slip was changed by someone else. Your edits will be discarded to load the current version. Load it?'))) { FD.duzenle = false; FD.taslak = []; await yukle(); }
+      else { q('#fdDurum').textContent = T('Kaydedilemedi: hiçbir değişiklik yapılmadı.', 'Not saved: nothing was changed.'); q('#fdDurum').className = 'fd-durum hata'; }
+    } finally { const b = q('#fdKaydet'); if (b) { b.disabled = false; b.textContent = yazi; } }
+  }
+  function jspdfYok() { return typeof jspdf === 'undefined'; }
+  const jspdfMesaji = function () { return T('Form/PDF bileşeni (jsPDF) yüklenemedi. İnternet bağlantınızı kontrol edip sayfayı yenileyin. Fiş ayrıntıları bu pencerede görüntülenebilir.', 'The form/PDF component (jsPDF) could not be loaded. Check your internet connection and reload. Slip details remain available in this window.'); };
+  function formAc() { if (!FD) return; if (jspdfYok()) { toast(jspdfMesaji(), true); return; } fisGoruntule(FD.fis); }
+  async function pdfIndir() { if (!FD) return; if (jspdfYok()) { toast(jspdfMesaji(), true); return; } try { await fisPdfIndir([FD.fis]); } catch (e) { toast(/jspdf/i.test(e.message) ? jspdfMesaji() : e.message, true); } }
+  function kirli() { return !!(FD && FD.duzenle && FD.taslak.length && imza(FD.taslak) !== FD.ilkImza); }
+  function acik() { const el = q('#fisDetay'); return !!el && !el.hidden; }
+  function kapat() { const el = q('#fisDetay'); if (el) el.hidden = true; document.body.classList.remove('fd-acik'); FD = null; }
+  function kapatIstegi() { if (kirli() && !window.confirm(T('Kaydedilmemiş değişiklikler var. Pencereyi kapatırsanız kaybolur. Devam edilsin mi?', 'You have unsaved changes. They will be lost if you close the window. Continue?'))) return false; kapat(); return true; }
+  return { ac: ac, acik: acik, kirli: kirli, kapat: kapat, kapatIstegi: kapatIstegi, duzenleniyor: function () { return !!(FD && FD.duzenle); }, _durum: function () { return FD; } };
+})();
+window.FISDETAY = FISDETAY;
+function fisDetayAc(fis, duzenle) { return FISDETAY.ac(fis, duzenle); }
+function fisDetayAcikMi() { return FISDETAY.acik(); }
+function fisDetayKirli() { return FISDETAY.kirli(); }
+function fisDetayKapatDogrudan() { FISDETAY.kapat(); }
+
+
+// ═══════════════════════════════════════════════════════════════════════════════════════════
 // KLAVYE KISAYOLLARI YÖNETİMİ (V02.06) - TEK MERKEZ
 //  • Tüm kısayollar KISAYOL.tanim içinde TEK yerde tanımlıdır; aynı tuş iki kez tanımlanamaz (açılışta denetlenir).
 //  • Yeni bir kayıt mekanizması YOKTUR: kaydet/yenile/yeni/yazdır işlemleri mevcut düğmeleri click() ile ya da
@@ -7859,7 +8138,7 @@ const KISAYOL = (function () {
     karekod:       { ara: '#krfQ', tabloAra: '#krfQ' },
     kritik:        { yenile: '#krYenileBtn' },
     raf:           { ara: '#rfListeAra', tabloAra: '#rfListeAra', depo: ['#rfDepo', '#rfAutoDepo'], yenile: function () { rfListeCiz(); return true; }, yeni: { odak: '#rfYeniKod' }, kaydet: ['#rfEkleBtn', '#rfAtaBtn', '#rfAutoBtn'] },
-    hareket:       { ara: '#tpAramaKod', depo: ['#tpDepo', '#tpRaf'], yenile: '#tpFisYenileBtn', yeni: { odak: '#tpAramaKod' }, kaydet: ['#tpBtn'], sepet: function () { return sepetOku(function () { return tpKalemler; }); } },
+    hareket:       { ara: '#tpAramaKod', depo: ['#tpDepo', '#tpRaf'], yenile: '#tpFisYenileBtn', duzenle: { satir: '#tpFisListe .fis-satir', tikla: '[data-tpfisgor]' }, yeni: { odak: '#tpAramaKod' }, kaydet: ['#tpBtn'], sepet: function () { return sepetOku(function () { return tpKalemler; }); } },
     toplu:         { ara: '#tbRows', depo: ['#tbDepo'], kaydet: ['#tbBtn'] },
     irsaliye:      { ara: '#irAramaKod', depo: ['#irKaynak', '#irHedef'], yenile: '#irArsivYenileBtn', yeni: { odak: '#irAramaKod' }, kaydet: ['#irBtn'], sepet: function () { return sepetOku(function () { return irKalemler; }); } },
     stokzimmet:    { ara: '#szAramaKod', tabloAra: '#szListeAra', depo: ['#szDepo'], yenile: '#szYenileBtn', yeni: '#szSerbestBtn', kaydet: ['#szZimmetVerBtn'] },
@@ -7964,9 +8243,10 @@ const KISAYOL = (function () {
     return Array.prototype.some.call(el.querySelectorAll('.card'), function (c) { return kirliKapsayici.has(c) && icerikVar(c); });
   };
   const izinAcikMi = function () { const a = gorunur(q('#izinOverlay')); if (!a) izinKirli = false; return a; };
+  const fisDetayAcik = function () { return typeof fisDetayAcikMi === 'function' && fisDetayAcikMi(); };
   const fgAcik = function () { return typeof FG !== 'undefined' && !!FG && !!FG.el && !FG.el.hidden; };
   const fgPanelAcik = function () { const p = document.getElementById('fgPanel'); const a = fgAcik() && !!p && !p.hidden; if (!a) fgKirli = false; return a; };
-  const herhangiKirli = function () { return Object.keys(EKRAN).some(ekranKirli) || (izinAcikMi() && izinKirli) || (fgKirli && fgPanelAcik()); };
+  const herhangiKirli = function () { return Object.keys(EKRAN).some(ekranKirli) || (typeof fisDetayKirli === 'function' && fisDetayKirli()) || (izinAcikMi() && izinKirli) || (fgKirli && fgPanelAcik()); };
   // Sayfadan ayrılma uyarısı: yalnızca tarayıcıda (Electron/Capacitor'da kapanışı engelleyebileceği için KAPALI)
   if (!UYGULAMA) window.addEventListener('beforeunload', function (e) { if (herhangiKirli()) { e.preventDefault(); e.returnValue = ''; return ''; } });
 
@@ -8009,6 +8289,7 @@ const KISAYOL = (function () {
       { ad: 'izin', modal: true, acik: izinAcikMi, kapat: function () { tikla('#izinKapatBtn') || tikla('#izinIptalBtn'); }, kirli: function () { return izinKirli; } },
       { ad: 'fgpanel', modal: true, acik: fgPanelAcik, kapat: function () { tikla('#fgVazgec') || (q('#fgPanel').hidden = true); }, kirli: function () { return fgKirli; } },
       { ad: 'fg', modal: true, acik: fgAcik, kapat: function () { fgKapat(); } },
+      { ad: 'fisdetay', modal: true, acik: fisDetayAcik, kapat: function () { fisDetayKapatDogrudan(); }, kirli: function () { return typeof fisDetayKirli === 'function' && fisDetayKirli(); } },
       { ad: 'hizli', modal: true, acik: function () { const s = q('#hizliSheet'); return !!s && s.classList.contains('on'); }, kapat: function () { hizliSheetKapat(); } },
       { ad: 'pop', modal: false, acik: function () { const p = q('#popUi'); return !!p && p.classList.contains('on'); }, kapat: function () { uiPopKapat(); } },
       { ad: 'menu', modal: false, acik: function () { const s = q('#sidebarNav'); return !!s && s.classList.contains('open'); }, kapat: function () { kayanMenuyuKapat(); } },
@@ -8035,6 +8316,8 @@ const KISAYOL = (function () {
     },
     yardim: function () { const y = q('#ksYardim'); if (y && !y.hidden) yardimKapat(); else yardimAc(); return true; },
     duzenle: function () {
+      if (fisDetayAcik() && !fgAcik()) return tikla('#fdDuzenle');     // fiş detayı açıkken: düzenleme kipine geç
+      if (modalAcik()) return false;
       const d = harita('duzenle'); if (!d) return false;
       const kok = document.getElementById('view-' + ekran());
       const satirlar = Array.prototype.filter.call(kok.querySelectorAll(d.satir), gorunur);
@@ -8051,6 +8334,7 @@ const KISAYOL = (function () {
     kaydet: function () {
       if (izinAcikMi()) { tikla('#izinKaydetBtn'); return true; }
       if (fgPanelAcik()) { tikla('#fgKaydet'); return true; }
+      if (fisDetayAcik() && !fgAcik()) { if (FISDETAY.duzenleniyor()) tikla('#fdKaydet'); else toastBilgi('Fiş düzenleme kipinde değil (önce Düzenle / F2).', 'The slip is not in edit mode (press Edit / F2 first).'); return true; }
       if (modalAcik()) { toastBilgi('Bu pencerede kaydedilecek açık form yok.', 'There is no open form to save in this window.'); return true; }
       const adaylar = (harita('kaydet') || []).map(q).filter(function (b) { return b && gorunur(b) && !b.disabled; });
       if (adaylar.length) {
@@ -8061,7 +8345,7 @@ const KISAYOL = (function () {
       toastBilgi('Bu ekranda kaydedilecek açık form yok.', 'There is no open form to save on this screen.'); return true;
     },
     yeni: function () { const y = harita('yeni'); return y ? eylemYap(y) : false; },
-    yazdir: function () { if (fgAcik() && tikla('#fgPdf')) return true; if (modalAcik()) return false; const y = harita('yazdir'); return y ? eylemYap(y) : false; },
+    yazdir: function () { if (fgAcik() && tikla('#fgPdf')) return true; if (fisDetayAcik() && !fgAcik()) return tikla('#fdPdf'); if (modalAcik()) return false; const y = harita('yazdir'); return y ? eylemYap(y) : false; },
     tabloAra: function () { const a = harita('tabloAra') || harita('ara'); return typeof a === 'string' ? odakla(a) : false; },
     geri: function () {
       const su = ekran();
@@ -8081,7 +8365,7 @@ const KISAYOL = (function () {
   const tanim = [
     { id: 'esc',     tus: 'Escape',        etiket: 'Esc',       grup: 'genel', girdide: true,  modalda: true,  harita: null,   ac: L('Açık pencereyi/paneli kapatır; pencere yoksa arama alanından, filtreden veya liste seçiminden çıkar.', 'Closes the open window/panel; if none, leaves the search field, filter or list selection.'), calistir: F.esc },
     { id: 'yardim',  tus: 'F1',            etiket: 'F1',        grup: 'genel', girdide: true,  modalda: true,  harita: null,   ac: L('Klavye kısayolları yardım penceresini açar/kapatır.', 'Opens/closes the keyboard shortcuts help window.'), calistir: F.yardim },
-    { id: 'duzenle', tus: 'F2',            etiket: 'F2',        grup: 'genel', girdide: false, modalda: false, harita: 'duzenle', ac: L('Seçili kaydı düzenler (listede satıra tıklayarak seçin; tek sonuç varsa otomatik).', 'Edits the selected record (click a list row to select; automatic if there is a single result).'), calistir: F.duzenle },
+    { id: 'duzenle', tus: 'F2',            etiket: 'F2',        grup: 'genel', girdide: false, modalda: true,  harita: 'duzenle', ac: L('Seçili kaydı düzenler (listede satıra tıklayarak seçin; tek sonuç varsa otomatik). Fiş detayı açıkken düzenleme kipine geçer.', 'Edits the selected record (click a list row to select; automatic if there is a single result). With a slip detail open it switches to edit mode.'), calistir: F.duzenle },
     { id: 'ara',     tus: 'F3',            etiket: 'F3',        grup: 'genel', girdide: true,  modalda: false, harita: 'ara',  ac: L('Arama alanına odaklanır (ekranda yoksa genel arama).', 'Focuses the search field (global search if the screen has none).'), calistir: F.ara },
     { id: 'filtre',  tus: 'F4',            etiket: 'F4',        grup: 'genel', girdide: true,  modalda: false, harita: 'filtre', ac: L('Filtreleme seçeneklerini açar (tekrar basınca sonraki filtre).', 'Opens the filter options (press again for the next filter).'), calistir: F.filtre },
     { id: 'yenile',  tus: 'F5',            etiket: 'F5',        grup: 'genel', girdide: true,  modalda: false, harita: 'yenile', ac: L('Mevcut listeyi yeniler (yenilenecek liste yoksa tarayıcı yenilemesi çalışır).', 'Refreshes the current list (the browser reload applies if the screen has no list).'), calistir: F.yenile },
